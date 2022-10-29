@@ -1,12 +1,19 @@
 import type { Product } from "./product";
 
+export interface CartProducts {
+  [key: string]: Product
+}
+
 export interface Cart {
-  id?: string;
+  id: string;
   user_id?: string;
-  username?: string;
+  total_price: number;
+  total_products: number;
+  total_quantity: number;
+  total_discounted: number;
   status: string,
   // ["Cart", "Checkout", "Paid", "Complete"];
-  cart_products: Product[];
+  cart_products: string[];
   created_at?: any;
   updated_at: any;
 }

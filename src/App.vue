@@ -1,58 +1,89 @@
-<script lang="ts">
+<script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { defineComponent, onUpdated, onMounted } from 'vue'
-import { useShopStore } from '@/stores/shop'
-import { supabase } from "@/server/supabase";
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
-import { storeToRefs } from "pinia";
+import { TransitionRoot } from '@headlessui/vue'
+import { defineComponent, ref, watchEffect } from 'vue'
+import { useShopStore, initShop } from '@/stores/shop'
+import { supabase } from "@/server/supabase";
+import { createPinia, storeToRefs } from 'pinia'
+import router from './router'
 
-export default defineComponent({
-  name: 'Default',
-  components: { NavBar, Footer },
-  setup() {
-    const shop = useShopStore()
-    const { user } = storeToRefs(shop)
+const shop = useShopStore()
+initShop()
 
-    onMounted(() => {
-      console.log('In layout')
-      // var isAuthenticated = JSON.stringify(user.value) === '{}' ? false : true;
-      // router.beforeEach((to, from) => {
-      //   if (
-      //     // make sure the user is authenticated
-      //     !isAuthenticated && to.name === 'checkout'
-      //   ) {
-      //     // redirect the user to the login page
-      //     return { name: 'login-signin' }
-      //   }
-      // })
-      // user from Sessionstorage
-      supabase.auth.onAuthStateChange((event, session) => {
-        console.log('Auth state changed')
-      })
-      // Cart to Localstorage
-      shop.$subscribe(
-        async (mutation, state) => {
-          mutation.type
-          mutation.storeId
+const { loading } = storeToRefs(shop)
+let timeout: NodeJS.Timeout;
 
-          await localStorage.setItem('Cart', JSON.stringify(state.cart))
-          console.log('Cart state change')
-
-          // TODO: async update supa DB /w cart, delivery, order, transaction states
-        },
-        { detached: true }
-      )
-    })
-  },
+router.afterEach((to, from) => {
+  // show for at least 400ms
+  loading.value = true
+  console.log('Before routing', loading.value)
+  clearTimeout(timeout);
+  setTimeout(() => {
+    loading.value = false
+    console.log('After routing', loading.value)
+  }, 4000)
 })
+
+// const { getProducts } = shop
+// console.log('App.vue', getProducts)
+
+shop.$subscribe(
+  async (mutation, state) => {
+    mutation.type
+    mutation.storeId
+
+    state.user = supabase.auth.user();
+    // const { data: { user } } = await supabase.auth.getUser()
+    // state.user = user
+    await supabase.auth.onAuthStateChange((event: any, session: any) => {
+      if (event == "SIGNED_OUT") {
+        state.user = null;
+      } else {
+        state.user = session.user;
+        console.log("User: ", state.user)
+      }
+    })
+
+    // await localStorage.setItem('Cart', JSON.stringify(state.cart))
+    // await localStorage.setItem('ItemsQty', JSON.stringify(state.itemsQuantity))
+    // console.log('Cart state change')
+    // TODO: async update supa DB /w cart, delivery, order, transaction states
+  },
+  { detached: true }
+)
+
+
 </script>
 
 <template>
   <div>
+    <!-- <progress class="progress progress-secondary w-56" value="40" max="100"></progress> -->
     <NavBar />
-    <RouterView />
+    <router-view v-slot="{ Component, route }">
+      <!-- Use any custom transition and fallback to `fade` -->
+      <!-- <transition :name="route.meta.transition"  mode="out-in">
+        <component :is="Component" />
+      
+      </transition> -->
+      <!-- <transition name="transition-opacity ease-out" mode="out-in">
+        <component :is="Component" :key="route.path" />
+      </transition> -->
+      <transition name="transition duration-1000 ease-in-out" mode="out-in">
+        <div :key="route.name || undefined">
+          <component :is="Component"></component>
+        </div>
+      </transition>
+
+      <!-- <transition :name="route.meta.transitionName" mode="out-in">
+        <component :is="Component" />
+      </transition> -->
+    </router-view>
+    <div class="divider"></div>
     <!-- TODO: Footer stick to bottom -->
-    <Footer />
+    <div class="relative">
+      <!-- <Footer /> -->
+    </div>
   </div>
 </template>

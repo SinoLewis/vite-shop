@@ -1,6 +1,5 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { supabase } from '../server/supabase'
-import axios from "axios";
 import type { Product } from "../types/product";
 import type { UserDetails } from "../types/user_details";
 import type { Order } from "../types/order";
@@ -8,93 +7,69 @@ import type { Transaction } from "../types/transaction";
 import type { Cart } from "../types/cart";
 // import { User } from "@supabase/supabase-js";
 
+const SELECTED_CART = 'LocalCart';
+
 export const useShopStore = defineStore("shop", {
-    state: () => {
-        const user = {} as any
-        const user_details = {} as UserDetails
-        const products = [] as Product[]
-        const cart = { status: 'Cart', cart_products: [] as Product[] } as Cart
-        const transaction = {} as Transaction
+    state: () => ({
 
-        return {
-            // General Products
-            user,
-            user_details,
-            products,
-            cart,
-            transaction
+        // General Products
+        user: {} as any,
+        user_details: {} as UserDetails,
+        products: [] as Product[],
+        cart: {} as Cart,
+        transaction: {} as Transaction,
+        loading: true
 
-            // fav_Products: [] as Product[],
+        // fav_Products: [] as Product[],
 
-            // Order Products
-            // orders: [] as Order[],
-            // current_order: {} as Order,
-            // order_products: [] as OrderProduct[],
+        // Order Products
+        // orders: [] as Order[],
+        // current_order: {} as Order,
+        // order_products: [] as OrderProduct[],
 
-            // // User's orders (Transactions)
-            // transactions: [] as Transaction[],
-            // current_transaction: {} as Transaction
+        // // User's orders (Transactions)
+        // transactions: [] as Transaction[],
+        // current_transaction: {} as Transaction
 
-            // Miscelenous
-            // showModal: false
-            // showPopupCart: false
-        }
-    },
+        // Miscelenous
+        // showModal: false
+        // showPopupCart: false
+    }),
     getters: {
-        getUser: async (state) => {
-            try {
-                // TODO set jwt token in dotenv
-                const { user, error } = await supabase.auth.api.getUser('ACCESS_TOKEN_JWT')
-                if (error) console.log('User state Error:', error);
-                state.user = { ...user }
-                // TODO: push notification alert for succesful user                
-                console.log("User state: ", state.user);
-
-                // TODO: 2. Update user details state to user metadata
-                // if this.user_details
-                // this.user_details = { ...this.user_details, email: this.user.email, created_on: this.user.email_confirmed_at, last_login: this.user.email_confirmed_at }
-                // ? create DB for Users Details to update
-
-            } catch (error: any) {
-                // TODO: push notification alert for error when getting user
-                console.log(error.error_description || error.message);
+        authUser: (state) => {
+            if (state.user) {
+                return state.user['aud'] === 'authenticated' ? true : false
+            } else {
+                return false
             }
         },
-        isLoggedIn: (state) => {
-            return state.user.aud === 'authenticated' ? true : false
-        },
-        getProducts: async (state) => {
-            try {
-                const { data, error } = await supabase.from('products').select()
-                if (error) throw error
-                console.log("Products state: ", state.products);
-                state.products = data
-            } catch (error: any) {
-                console.log(error.error_description || error.message)
+        productQuantity: (state) => Object.keys(state.products).length,
+        categories: (state) => {
+            let data = {
+                'Hoodies': state.products.filter(product => product.category === "Hoodies"),
+                'Men\'s': state.products.filter(product => product.category === "Men\'s"),
+                'Lady\s': state.products.filter(product => product.category === "Lady\s"),
+                'Kid\'s': state.products.filter(product => product.category === "Kid\'s"),
+                'Jewellery': state.products.filter(product => product.category === "Jewellery"),
+                'Shoals': state.products.filter(product => product.category === "Shoals"),
             }
+            return data
         },
-        productById: (state) => (id: Product["id"]) => {
-            if (state.products) {
-                return state.products.find((product) => product.id === id);
-            }
-        },
-        // getCartProducts
-
+        cartQuantity: (state) => {
+            if (state.cart.cart_products) {
+                return state.cart.cart_products.length
+            } else return 0
+        }
+        // cartProducts (state) => ,
+        // cartTotal: (state) => {
+        //     let cartProducts = state.products.filter((product)=> )
+        //     state.products.filter(product => product.id === item.price)
+        // }
         // cartTotal: (state) => {
         //     var total = 0
         //     state.cart.cart_products.forEach(item => total += item.price)
         //     return total
-        // getCartProducts: async (state) => {
-        //     if (process.client) {
-        //         state.cart.cart_products = [] = JSON.parse(localStorage.shop).cart.cart_products
-        //     }
         // },
-        // },
-        cartQuantity: (state) => {
-            if (state.cart.cart_products) {
-                return state.cart.cart_products.length
-            }
-        },
         /*  
             5. Transaction
          */
@@ -128,11 +103,9 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 // TODO: push notification alert for succesful signup
                 console.log("You've been registered successfully");
-                return true
             } catch (error: any) {
                 // TODO: push notification alert for error when signup
                 console.log(error.error_description || error.message);
-                return false
             }
         },
         async signInAction(user_form: any) {
@@ -144,12 +117,9 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 // TODO: push notification alert for succesful sigin
                 console.log("You've Signed In successfully");
-                this.user = user
-                return true
             } catch (error: any) {
                 // TODO: push notification alert for error when sigin
                 console.log(error.error_description || error.message);
-                return false
             }
         },
         async signInTPS(user_form: any, provider: any) {
@@ -162,13 +132,9 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 // TODO: push notification alert for succesful 3rd party signin
                 console.log("You've been Signed In successfully");
-                this.user = {}
-                
-                return true
             } catch (error: any) {
                 // TODO: push notification alert for error when sign
                 console.log(error.error_description || error.message);
-                return false
             }
         },
         async signOutAction() {
@@ -177,12 +143,9 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 // TODO: push notification alert for succesful signout
                 console.log("You've been logged Out successfully");
-                this.user = {}
-                return true
             } catch (error: any) {
                 // TODO: push notification alert for error when signout
                 console.log(error.error_description || error.message);
-                return false
             }
         },
         async updateUserDetails(user_form: UserDetails) {
@@ -196,41 +159,136 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 // TODO: push notification alert for succesful user update
                 console.log("Your User Details have been updated successfully");
-                return true
             } catch (error: any) {
                 // TODO: push notification alert for error when user update
                 console.log(error.error_description || error.message);
-                return false
             }
         },
         /*  
             2. PRODUCT
          */
 
+        async getProducts() {
+            console.log('PINIA PINIA PINIA')
+            try {
+                const { data, error } = await supabase.from('products').select()
+                if (error) throw error
+                this.products = await data
+                console.log("Products state: ", await data);
+                // return await data
+            } catch (error: any) {
+                console.log(error.error_description || error.message)
+                // return []
+            }
+        },
+        // getProductById(id: Product['id']) {
+        //     this.products.forEach((product) => product.id === id)
+        // },
+        currentProduct(title: string) {
+            let product = this.products.find((product) => product.title === title)
+            return Object.assign({}, product)
+        },
         /*  
             3. CART
          */
+        async getCart() {
+            if (!localStorage.getItem(SELECTED_CART)) {
+                try {
+                    const { data, error } = await supabase
+                        .from('carts')
+                        // TODO: fk carts db cart_products
+                        .insert({})
+                    if (error) throw error
+                    localStorage.setItem(SELECTED_CART, await data[0]['id'])
+                    console.log('Setting new cart', await data[0]['id'])
+                } catch (error: any) {
+                    console.log(error.error_description || error.message);
+                }
+            }
+            if (localStorage.getItem(SELECTED_CART)) {
+                try {
+                    const { data, error } = await supabase
+                        .from('carts')
+                        .select()
+                        .eq('id', await localStorage.getItem(SELECTED_CART))
+                    if (error) throw error
+                    this.cart = await data[0]
+                    // if(!this.cart.cart_products) this.cart.cart_products = data[0]['cart_products']
+                    console.log('Getting cart', data[0])
+                } catch (error: any) {
+                    console.log(error.error_description || error.message);
+                }
+            }
+        },
+        inCart(product: Product) {
+            if (this.cart.cart_products) {
+                let inCart = this.cart.cart_products.find(id => id === product.id)
+                return !!inCart
+            } else {
+                return false
+            }
+        },
         async addCartProduct(cart_product: Product) {
-            // update supabse carts db
-            this.cart.cart_products.push(cart_product)
-            console.log("Added Cart product", cart_product)
+            try {
+                this.cart.cart_products.push(cart_product.id)
+                const { error } = await supabase
+                    .from('carts')
+                    // TODO: updated_at column
+                    .upsert(this.cart)
+                if (error) throw error;
+                // TODO: push notification alert for succesful user update
+                console.log("Added Cart product", cart_product)
+            } catch (error: any) {
+                // TODO: push notification alert for error when user update
+                console.log(error.error_description || error.message);
+            }
         },
         async removeCartProduct(cart_product: Product) {
-            var index = this.cart.cart_products.findIndex(index => index.id === cart_product.id)
-            if (index >= 0) {
-                this.cart.cart_products.splice(index, 1)
+            try {
+                var index = this.cart.cart_products.findIndex(id => id === cart_product.id)
+                if (index >= 0) {
+                    this.cart.cart_products.splice(index, 1)
+                }
+                const { error } = await supabase
+                    .from('carts')
+                    .upsert(this.cart)
+                if (error) throw error;
+                // TODO: push notification alert for succesful user update
+                console.log("Removed Cart product ", cart_product)
+            } catch (error: any) {
+                // TODO: push notification alert for error when user update
+                console.log(error.error_description || error.message);
             }
-            console.log("Removed Cart product ", cart_product)
+
         },
         async removeCartProducts(cart_product: Product) {
-            // update supabse carts db
-            this.cart.cart_products = this.cart.cart_products.filter(item => item.id !== cart_product.id)
-            console.log("Removed Cart products ", cart_product)
+            try {
+                this.cart.cart_products = this.cart.cart_products.filter(id => id !== cart_product.id)
+                const { error } = await supabase
+                    .from('carts')
+                    .upsert(this.cart)
+                if (error) throw error;
+                // TODO: push notification alert for succesful user update
+                console.log("Removed Cart products ", cart_product)
+            } catch (error: any) {
+                // TODO: push notification alert for error when user update
+                console.log(error.error_description || error.message);
+            }
         },
         async removeAllCartProducts() {
-            // update supabse carts db
-            this.cart.cart_products = []
-            console.log("Removed all Cart products")
+            try {
+                this.cart.cart_products = []
+                const { error } = await supabase
+                    .from('carts')
+                    .upsert(this.cart)
+                if (error) throw error;
+                // TODO: push notification alert for succesful user update
+                console.log("Removed all Cart products")
+            } catch (error: any) {
+                // TODO: push notification alert for error when user update
+                console.log(error.error_description || error.message);
+            }
+
         },
         /*  
             5. Transaction
@@ -238,3 +296,9 @@ export const useShopStore = defineStore("shop", {
         // POST method actions updating state
     },
 });
+
+export async function initShop() {
+    const shop = useShopStore()
+    shop.getProducts()
+    shop.getCart()
+}

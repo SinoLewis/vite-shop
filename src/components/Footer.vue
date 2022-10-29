@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer p-10 bg-neutral text-neutral-content">
+    <footer class="absolute bottom-0 footer footer-center p-10 bg-primary text-primary-content">
         <div>
             <svg width="50" height="50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
                 clip-rule="evenodd" class="fill-current">
