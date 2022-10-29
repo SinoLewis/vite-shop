@@ -15,16 +15,16 @@ initShop()
 const { loading } = storeToRefs(shop)
 let timeout: NodeJS.Timeout;
 
-router.afterEach((to, from) => {
-  // show for at least 400ms
-  loading.value = true
-  console.log('Before routing', loading.value)
-  clearTimeout(timeout);
-  setTimeout(() => {
-    loading.value = false
-    console.log('After routing', loading.value)
-  }, 4000)
-})
+// router.afterEach((to, from) => {
+//   // show for at least 400ms
+//   loading.value = true
+//   console.log('Before routing', loading.value)
+//   clearTimeout(timeout);
+//   setTimeout(() => {
+//     loading.value = false
+//     console.log('After routing', loading.value)
+//   }, 4000)
+// })
 
 // const { getProducts } = shop
 // console.log('App.vue', getProducts)
