@@ -1,6 +1,6 @@
 <template>
     <div v-for="product in products" :key="product.id"
-        class="w-72 card card-compact bg-base-100 shadow-xl transition ease-in-out hover:scale-105 duration-500">
+        class="w-72 card card-compact glass bg-base-100 shadow-xl transition ease-in-out hover:scale-105 duration-500">
         <router-link :to="'/product/' + product.title">
             <figure><img src="@/assets/dummy/thumbnail-4.jpg" class="w-full h-48 object-cover object-center"
                     :alt="product.title" />
@@ -43,9 +43,7 @@
 import { ShoppingCartIcon, HeartIcon, PlusIcon, MinusIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import type { Product } from "@/types/product";
 import { useShopStore } from '@/stores/shop';
-import { ref } from "vue";
 
-const categories = ref(['Hoodies', 'Men\'s', 'Lady\s', 'Kid\'s', 'Jewellery', 'Shoals'])
 const { inCart, addCartProduct, removeCartProduct, removeCartProducts } = useShopStore();
 
 defineProps<{

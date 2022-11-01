@@ -14,7 +14,34 @@
                                     : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',
                             ]">
                                 <!-- TODO: Improve Performance efficiency; if bad -->
-                                <div class="flex gap-2 justify-center items-center">
+                                <div class="">
+                                    <div class="" v-if="key === 'Hoodies'">
+                                        <ShieldCheckIcon class="w-12 h-8" />
+                                        <span>{{ key }}</span>
+                                    </div>
+                                    <div class="" v-if="key === 'Men\'s'">
+                                        <RocketLaunchIcon class="w-12 h-8" />
+                                        <span>{{ key }}</span>
+                                    </div>
+                                    <div class="" v-if="key === 'Lady\s'">
+                                        <FaceSmileIcon class="w-12 h-8" />
+                                        <span>{{ key }}</span>
+                                    </div>
+                                    <div class="" v-if="key === 'Kid\'s'">
+                                        <GifIcon class="w-12 h-8" />
+                                        <span>{{ key }}</span>
+                                    </div>
+                                    <div class="" v-if="key === 'Jewellery'">
+                                        <CogIcon class="w-12 h-8" />
+                                        <span>{{ key }}</span>
+                                    </div>
+                                    <div class="" v-if="key === 'Shoals'">
+                                        <ServerIcon class="w-12 h-8" />
+                                        <span>{{ key }}</span>
+                                    </div>
+                                    <!-- <span class="p-1.5">{{ key }}</span> -->
+                                </div>
+                                <!-- <div class="flex gap-2 justify-center items-center">
                                     <div class="grid justify-items-center" v-if="key === 'Hoodies'">
                                         <ShieldCheckIcon class="w-12 h-8" />
                                         <span class="p-1.5">{{ key }}</span>
@@ -39,17 +66,13 @@
                                         <ServerIcon class="w-12 h-8" />
                                         <span class="p-1.5">{{ key }}</span>
                                     </div>
-                                    <!-- <span class="p-1.5">{{ key }}</span> -->
-                                </div>
+                                </div> -->
                             </button>
                         </Tab>
                     </TabList>
 
                     <TabPanels class="mt-2">
-                        <TabPanel v-for="(value, key, index) in categories" :key="index" :class="[
-                            'rounded-xl p-3',
-                            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                        ]">
+                        <TabPanel v-for="(value, key, index) in categories" :key="index" class="rounded-xl p-3">
                             <div class="grid grid-row-2 gap-8 justify-items-center">
                                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-x-12 lg:grid-cols-4">
                                     <!-- TODO: Pagination; Loop over range instead of products (LearnVue tut)-->
