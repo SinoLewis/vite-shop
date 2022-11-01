@@ -21,7 +21,7 @@
                     </label>
                     <label class="input-group">
                         <span>Password</span>
-                        <input type="text" placeholder="info@site.com" class="input input-bordered text-secondary"
+                        <input type="password" placeholder="info@site.com" class="input input-bordered text-secondary"
                             v-model="password" />
                     </label>
                 </div>

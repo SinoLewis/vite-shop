@@ -1,7 +1,9 @@
 <template>
-    <div>
+    <div class="grid justify-center">
         <ul class="steps">
             <li class="step step-info">
+                <!-- TODO: Style button as of Headless UI -->
+                <!-- TODO: Dynamic rendering -->
                 <a href="#Cart" @click="selectedTitle = tabTitles[0]">
                     <div class="grid justify-items-center">
                         <img class="w-8 h-8" src="@/assets/svg/cart.svg" alt="">

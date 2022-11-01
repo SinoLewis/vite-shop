@@ -1,6 +1,6 @@
 <template>
-    <div class="grid grid-cols-4 gap-8">
-        <div class="col-span-3">
+    <div class="grid grid-cols-4 gap-2">
+        <div class="p-2 col-span-4 md:col-span-3">
             <div>
                 <div class="border-4 border-base-300 rounded-lg bg-secondary-content">
                     <h2 class="p-4 text-3xl text-neutral-content">Cart (5)</h2>
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="p-2 col-span-4 md:col-span-1">
             <div class="card glass card-bordered text-neutral-content">
                 <div class="bg-secondary-content">
                     <h2 class="p-4 text-3xl">Cart Summary</h2>

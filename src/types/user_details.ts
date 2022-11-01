@@ -9,11 +9,11 @@ export interface UserDetails {
   email?: string;
   is_admin: false;
   address1: string;
-  address2: string;
-  country: string;
+  address2?: string;
+  country?: string;
   county: string;
-  city: string;
-  zip: string;
+  city?: string;
+  zip?: string;
   created_on?: string;
   last_login?: string;
   avatarUrl?: string;
