@@ -44,12 +44,14 @@ export const useShopStore = defineStore("shop", {
                 return false
             }
         },
-        productQuantity: (state) => Object.keys(state.products).length,
+        productQuantity: (state) => state.products ? Object.keys(state.products).length : {},
         categories: (state) => {
             let ctgs = ['Hoodies', 'Men\'s', 'Lady\s', 'Kid\'s', 'Jewellery', 'Shoals']
             let data: any = {}
             ctgs.forEach(ctg => {
-                data[ctg] = state.products.filter(product => product.category === ctg)
+                if (state.products) {
+                    data[ctg] = state.products.filter(product => product.category === ctg)
+                }
             })
             return data
         },
@@ -73,14 +75,16 @@ export const useShopStore = defineStore("shop", {
         },
         cartTotal: (state) => {
             let total = 0
-            state.cart.cart_products.forEach((id) => {
-                state.products.forEach((product) => {
-                    if (product.id == id) {
-                        total = product['price'] + total
-                    }
+            if (state.cart.cart_products) {
+                state.cart.cart_products.forEach((id) => {
+                    state.products.forEach((product) => {
+                        if (product.id == id) {
+                            total = product['price'] + total
+                        }
+                    })
                 })
-            })
-            return total
+                return total
+            } else return 0
         },
         /*  
             5. Transaction
@@ -183,12 +187,16 @@ export const useShopStore = defineStore("shop", {
             }
         },
         getProductById(id: string) {
-            let product = this.products.find((product) => product.id === id)
-            return Object.assign({}, product)
+            if (this.products) {
+                let product = this.products.find((product) => product.id === id)
+                return Object.assign({}, product)
+            }
         },
         currentProduct(title: string) {
-            let product = this.products.find((product) => product.title === title)
-            return Object.assign({}, product)
+            if (this.products) {
+                let product = this.products.find((product) => product.title === title)
+                return Object.assign({}, product)
+            }
         },
         /*  
             3. CART
