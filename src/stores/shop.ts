@@ -45,21 +45,41 @@ export const useShopStore = defineStore("shop", {
         },
         productQuantity: (state) => Object.keys(state.products).length,
         categories: (state) => {
-            let data = {
-                'Hoodies': state.products.filter(product => product.category === "Hoodies"),
-                'Men\'s': state.products.filter(product => product.category === "Men\'s"),
-                'Lady\s': state.products.filter(product => product.category === "Lady\s"),
-                'Kid\'s': state.products.filter(product => product.category === "Kid\'s"),
-                'Jewellery': state.products.filter(product => product.category === "Jewellery"),
-                'Shoals': state.products.filter(product => product.category === "Shoals"),
-            }
+            let ctgs = ['Hoodies', 'Men\'s', 'Lady\s', 'Kid\'s', 'Jewellery', 'Shoals']
+            let data: any = {}
+            ctgs.forEach(ctg => {
+                data[ctg] = state.products.filter(product => product.category === ctg)
+            })
+            // let value = Object.entries(data).forEach(([key, value]) => value)
+            // value.forEach(product => {
+            //     let length = state.cart.cart_products.filter(id => id === product.id).length
+            //     product['CartItems'] = length
+            //     console.log(product['CartItems'])
+            //     return product
+            // })
+            // console.log(nw)
             return data
         },
         cartQuantity: (state) => {
             if (state.cart.cart_products) {
                 return state.cart.cart_products.length
             } else return 0
-        }
+        },
+        cartCheckout: (state) => {
+            let index: any = {}
+            if (state.cart.cart_products) {
+                state.cart.cart_products.forEach((cid) => {
+                    let items = state.cart.cart_products.filter(id => id === cid)
+                    index[items[0]] = {
+                        quantity: items.length,
+                        product: state.products.find((product) => product.id = items[0]),
+                    }
+                })
+            }
+            return index
+        },
+        // TODO: actions func(id) => int: No of Product in cart 
+        // TODO: getter  state.products => maps all {product.id : Cart Items}
         // cartProducts (state) => ,
         // cartTotal: (state) => {
         //     let cartProducts = state.products.filter((product)=> )
@@ -227,6 +247,12 @@ export const useShopStore = defineStore("shop", {
             } else {
                 return false
             }
+        },
+        cartItems(cid: string) {
+            if (this.cart.cart_products) {
+                // let items = this.cart.cart_products.filter(id => id === cid)
+                return this.cart.cart_products.filter(id => id === cid).length
+            } else return 0
         },
         async addCartProduct(cart_product: Product) {
             try {

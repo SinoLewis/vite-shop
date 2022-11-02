@@ -1,5 +1,5 @@
 <template>
-    <div v-for="product in products" :key="product.id"
+    <div v-for="(product, index) in products" :key="product.id"
         class="w-72 card card-compact glass bg-base-100 shadow-xl transition ease-in-out hover:scale-105 duration-500">
         <router-link :to="'/product/' + product.title">
             <figure><img src="@/assets/dummy/thumbnail-4.jpg" class="w-full h-48 object-cover object-center"
@@ -13,7 +13,7 @@
                 <div class="badge badge-lg badge-info font-bold">Ksh {{ product.price }}
                 </div>
                 <!-- <div class="badge badge-lg badge-accent font-bold">Stock: {{ product.quantity }}</div> -->
-                <div class="badge badge-lg badge-accent font-bold">Cart: {{ 8 }}</div>
+                <div class="badge badge-lg badge-accent font-bold">Item(s) Added: {{ cartItems(product.id) }}</div>
             </div>
             <div class="card-actions justify-end">
                 <button class="btn btn-sm btn-outline btn-accent">
@@ -43,10 +43,12 @@
 import { ShoppingCartIcon, HeartIcon, PlusIcon, MinusIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import type { Product } from "@/types/product";
 import { useShopStore } from '@/stores/shop';
-
-const { inCart, addCartProduct, removeCartProduct, removeCartProducts } = useShopStore();
+import { storeToRefs } from 'pinia';
 
 defineProps<{
     products: Product[],
 }>()
+
+const shop = useShopStore()
+const { inCart, cartItems, addCartProduct, removeCartProduct, removeCartProducts } = shop;
 </script>

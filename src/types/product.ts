@@ -13,4 +13,5 @@ export interface Product {
   image_url: string;
   publish_date?: string;
   lastmod?: string;
+  cartItems?: []
 }

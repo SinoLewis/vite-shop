@@ -1,7 +1,7 @@
 import type { Product } from "./product";
 
 export interface CartProducts {
-  [key: string]: Product
+  [key: string]: number
 }
 
 export interface Cart {
