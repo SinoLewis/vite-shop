@@ -15,6 +15,7 @@ initShop()
 const { loading } = storeToRefs(shop)
 let timeout: NodeJS.Timeout;
 
+// TODO: Route loaders
 // router.afterEach((to, from) => {
 //   // show for at least 400ms
 //   loading.value = true
@@ -46,10 +47,11 @@ shop.$subscribe(
       }
     })
 
+    // TODO: Offline Cart Items getters = localStorage.setItem('CartProducts')
+    // TODO: Cart data read from above getter
     // await localStorage.setItem('Cart', JSON.stringify(state.cart))
     // await localStorage.setItem('ItemsQty', JSON.stringify(state.itemsQuantity))
     // console.log('Cart state change')
-    // TODO: async update supa DB /w cart, delivery, order, transaction states
   },
   { detached: true }
 )
