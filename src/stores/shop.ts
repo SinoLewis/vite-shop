@@ -50,14 +50,6 @@ export const useShopStore = defineStore("shop", {
             ctgs.forEach(ctg => {
                 data[ctg] = state.products.filter(product => product.category === ctg)
             })
-            // let value = Object.entries(data).forEach(([key, value]) => value)
-            // value.forEach(product => {
-            //     let length = state.cart.cart_products.filter(id => id === product.id).length
-            //     product['CartItems'] = length
-            //     console.log(product['CartItems'])
-            //     return product
-            // })
-            // console.log(nw)
             return data
         },
         cartQuantity: (state) => {
@@ -72,39 +64,27 @@ export const useShopStore = defineStore("shop", {
                     let items = state.cart.cart_products.filter(id => id === cid)
                     index[items[0]] = {
                         quantity: items.length,
-                        product: state.products.find((product) => product.id = items[0]),
+                        id: items[0],
                     }
                 })
             }
             return index
         },
-        // TODO: actions func(id) => int: No of Product in cart 
-        // TODO: getter  state.products => maps all {product.id : Cart Items}
-        // cartProducts (state) => ,
-        // cartTotal: (state) => {
-        //     let cartProducts = state.products.filter((product)=> )
-        //     state.products.filter(product => product.id === item.price)
-        // }
-        // cartTotal: (state) => {
-        //     var total = 0
-        //     state.cart.cart_products.forEach(item => total += item.price)
-        //     return total
-        // },
+        cartTotal: (state) => {
+            let total = 0
+            state.cart.cart_products.forEach((id) => {
+                state.products.forEach((product) => {
+                    if (product.id == id) {
+                        total = product['price'] + total
+                    }
+                })
+            })
+            return total
+        },
         /*  
             5. Transaction
          */
         // GET Mpesa Consumer Auth Key to env var
-        // getAuth: async (state) => {
-        //     // await fetch request
-        //     const headers = {
-        //         "Authorization": 'Basic SGQzVnpYMEtLMkdrU0QwUW1wQkE2TW1SeFdSREdlQVU6cEpGR2JoZWM5U2VqaGx3ZA',
-        //         "Access-Control-Allow-Origin" : '*'
-        //     }
-        //     await fetch('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', { headers })
-        //         // promise response updating state
-        //         .then((response) => { console.log('Type of response', typeof (response), response) })
-        // }
-
         // POST Make an Account Balance query
         // POST Initiate a Lipa na M-Pesa Online Payment
         // POST Query the status of a Lipa na M-Pesa Online Payment
@@ -201,9 +181,10 @@ export const useShopStore = defineStore("shop", {
                 // return []
             }
         },
-        // getProductById(id: Product['id']) {
-        //     this.products.forEach((product) => product.id === id)
-        // },
+        getProductById(id: string) {
+            let product = this.products.find((product) => product.id === id)
+            return Object.assign({}, product)
+        },
         currentProduct(title: string) {
             let product = this.products.find((product) => product.title === title)
             return Object.assign({}, product)
