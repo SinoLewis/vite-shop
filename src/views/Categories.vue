@@ -116,7 +116,7 @@ function onPageChange(page: any) {
     console.log(page)
     currentPage.value = page;
 }
-
+// TODO: onErrorCaptured callback
 const ProductsCard = defineAsyncComponent({
     loader: () => import("@/components/ProductsCard.vue"),
     // A component to use while the async component is loading
@@ -125,9 +125,10 @@ const ProductsCard = defineAsyncComponent({
     delay: 0,
 
     // A component to use if the load fails
-    // errorComponent: ErrorComponent,
+    errorComponent: () => import("@/components/ItemsError.vue"),
     // The error component will be displayed if a timeout is
     // provided and exceeded. Default: Infinity.
     // timeout: 3000
+    // TODO: custom loader instead of suspense ; Suspensible false
 })
 </script>
