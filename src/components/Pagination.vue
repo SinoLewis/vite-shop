@@ -1,5 +1,5 @@
 <template>
-    <ul class="btn-group btn-group-vertical lg:btn-group-horizontal">
+    <ul class="flex gap-2 btn-group btn-group-vertical lg:btn-group-horizontal">
         <li>
             <button class="btn" type="button" @click="onClickFirstPage" :disabled="isInFirstPage">
                 First
@@ -15,7 +15,7 @@
         <!-- Visible Buttons Start -->
 
         <li v-for="page in pages" :key="page.name">
-            <button class="btn bg-accent" type="button" :disabled="page.isDisabled" @click="onClickPage(page.name)">
+            <button class="btn bg-secondary-content" type="button" :disabled="page.isDisabled" @click="onClickPage(page.name)">
                 {{ page.name }}
             </button>
         </li>

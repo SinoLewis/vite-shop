@@ -85,12 +85,7 @@
                                         </template>
                                     </Suspense>
                                 </div>
-                                <div class="btn-group">
-                                    <button class="btn btn-lg">1</button>
-                                    <button class="btn btn-lg btn-active">2</button>
-                                    <button class="btn btn-lg">3</button>
-                                    <button class="btn btn-lg">4</button>
-                                </div>
+                                <Pagination :totalPages="10" :perPage="10" :currentPage="currentPage" @pagechanged="onPageChange" />
                             </div>
                         </TabPanel>
                     </TabPanels>
@@ -103,10 +98,9 @@
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { ShieldCheckIcon, RocketLaunchIcon, FaceSmileIcon, GifIcon, CogIcon, ServerIcon } from '@heroicons/vue/20/solid'
-import { defineAsyncComponent } from "vue";
-// import ProductsCard from '@/components/ProductsCard.vue'
+import Pagination from '@/components/Pagination.vue'
 import ItemsLoader from "@/components/ItemsLoader.vue";
-
+import { defineAsyncComponent, ref } from "vue";
 import { useShopStore } from '@/stores/shop';
 import { storeToRefs } from 'pinia';
 
@@ -117,6 +111,11 @@ const { categories } = storeToRefs(useShopStore())
 
 //     return categories
 // }
+const currentPage = ref(1)
+function onPageChange(page: any) {
+    console.log(page)
+    currentPage.value = page;
+}
 
 const ProductsCard = defineAsyncComponent({
     loader: () => import("@/components/ProductsCard.vue"),
