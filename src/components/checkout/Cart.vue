@@ -84,7 +84,6 @@ import { useShopStore } from '@/stores/shop'
 import { storeToRefs } from 'pinia'
 
 const shop = useShopStore()
-const { getProductById } = shop
 const { cartCheckout, cartQuantity, cartTotal } = storeToRefs(shop)
-const { inCart, cartItems, addCartProduct, removeCartProduct, removeCartProducts } = shop;
+const { getProductById, inCart, cartItems, addCartProduct, removeCartProduct, removeCartProducts } = shop;
 </script>
