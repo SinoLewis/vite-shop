@@ -202,6 +202,7 @@ export const useShopStore = defineStore("shop", {
             3. CART
          */
         async getCart() {
+            // TODO: switch instead of if to exec both blocks
             if (!localStorage.getItem(SELECTED_CART)) {
                 try {
                     const { data, error } = await supabase
