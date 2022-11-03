@@ -48,7 +48,7 @@ import { ShoppingCartIcon, HeartIcon, PlusIcon, MinusIcon, TrashIcon } from '@he
 import type { Product } from "@/types/product";
 import { useShopStore } from '@/stores/shop';
 import { storeToRefs } from 'pinia';
-// TODO: define Async props?
+
 defineProps<{
     products: Product[],
 }>()
