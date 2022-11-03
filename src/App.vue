@@ -15,7 +15,20 @@ initShop()
 const { loading } = storeToRefs(shop)
 let timeout: NodeJS.Timeout;
 
-// TODO: Route loaders
+// TODO: Route loaders & Scroll Behaviour
+// scrollBehavior(to, from, savedPosition) {
+//   if (savedPosition) {
+//     return savedPosition
+//   } else {
+//     return { top: 0 }
+//   }
+//   },
+// router.afterEach((to, from) => {
+//   const toDepth = to.path.split('/').length
+//   const fromDepth = from.path.split('/').length
+//   to.meta.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+// })
+
 // router.afterEach((to, from) => {
 //   // show for at least 400ms
 //   loading.value = true
