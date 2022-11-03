@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 function loginPopup() {
-    // TODO: Fix this using vue
+    // TODO: Fix this using vue template refs
     // document.querySelector('#loginModal').click()
 }
 </script>
