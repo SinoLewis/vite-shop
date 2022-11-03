@@ -1,5 +1,6 @@
 <template>
     <div class="grid justify-center">
+        <!-- TODO: Design Tabs; replace deisgn in Categories.vue -->
         <TabsWrapper>
             <Tab title="Cart">
                 <Cart />
