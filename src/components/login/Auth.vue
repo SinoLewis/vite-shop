@@ -1,12 +1,15 @@
 <template>
-    <div>
-        <div v-if="!toggle">
-            <Signin />
-            <p class="py-4">Dont have an account? <a @click="click" class="btn btn-xs text-accent">Sign Up</a></p>
-        </div>
-        <div v-else>
-            <Signup />
-            <p class="py-4">Already have an account? <a @click="click" class="btn btn-xs text-accent">Sign In</a></p>
+    <div class="border-4 border-secondary-focus rounded-lg">
+        <div class="p-4">
+            <div v-if="!toggle">
+                <Signin />
+                <p class="py-4">Dont have an account? <a @click="click" class="btn btn-xs text-accent">Sign Up</a></p>
+            </div>
+            <div v-else>
+                <Signup />
+                <p class="py-4">Already have an account? <a @click="click" class="btn btn-xs text-accent">Sign In</a>
+                </p>
+            </div>
         </div>
     </div>
 </template>
@@ -17,7 +20,7 @@ import Signup from "@/components/login/Signup.vue";
 import { ref } from "vue";
 
 const toggle = ref(false)
-const click = ()=>{
+const click = () => {
     toggle.value = !toggle.value
 }
 </script>
