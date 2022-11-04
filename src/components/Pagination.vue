@@ -1,13 +1,13 @@
 <template>
-    <ul class="flex gap-2 btn-group btn-group-vertical lg:btn-group-horizontal">
+    <ul class="flex gap-2 btn-group btn-group-horizontal">
         <li>
-            <button class="btn" type="button" @click="onClickFirstPage" :disabled="isInFirstPage">
+            <button class="btn btn-sm md:btn-md" type="button" @click="onClickFirstPage" :disabled="isInFirstPage">
                 First
             </button>
         </li>
 
         <li>
-            <button class="btn" type="button" @click="onClickPreviousPage" :disabled="isInFirstPage">
+            <button class="btn btn-sm md:btn-md" type="button" @click="onClickPreviousPage" :disabled="isInFirstPage">
                 Previous
             </button>
         </li>
@@ -15,7 +15,8 @@
         <!-- Visible Buttons Start -->
 
         <li v-for="page in pages" :key="page.name">
-            <button class="btn bg-secondary-content" type="button" :disabled="page.isDisabled" @click="onClickPage(page.name)">
+            <button class="btn btn-sm md:btn-md bg-secondary-content" type="button" :disabled="page.isDisabled"
+                @click="onClickPage(page.name)">
                 {{ page.name }}
             </button>
         </li>
@@ -23,13 +24,13 @@
         <!-- Visible Buttons End -->
 
         <li>
-            <button class="btn" type="button" @click="onClickNextPage" :disabled="isInLastPage">
+            <button class="btn btn-sm md:btn-md" type="button" @click="onClickNextPage" :disabled="isInLastPage">
                 Next
             </button>
         </li>
 
         <li>
-            <button class="btn" type="button" @click="onClickLastPage" :disabled="isInLastPage">
+            <button class="btn btn-sm md:btn-md" type="button" @click="onClickLastPage" :disabled="isInLastPage">
                 Last
             </button>
         </li>
