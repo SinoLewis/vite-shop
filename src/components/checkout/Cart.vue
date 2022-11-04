@@ -16,13 +16,16 @@
                                 <h2 class="card-title">{{ getProductById(value['id'])['title'] }}</h2>
                                 <p>{{ getProductById(value['id'])['description'] }}</p>
                                 <div class="flex gap-1">
-                                    <div class="badge badge-lg badge-info font-bold">Ksh {{
-                                            getProductById(value['id'])['price']
-                                    }}
+                                    <div class="badge badge-lg bg-secondary-focus font-bold">Ksh <span
+                                            class="px-1 text-black">
+                                            {{ getProductById(value['id'])['price'] }}
+                                        </span>
                                     </div>
                                     <!-- <div class="badge badge-lg badge-accent font-bold">Stock: {{ product.quantity }}</div> -->
-                                    <div class="badge badge-lg badge-accent font-bold">Cart: {{ value['quantity'] }}
-                                    </div>
+                                    <div class="badge badge-lg bg-accent-focus font-bold">In Cart <span
+                                            class="px-1 text-black">
+                                            {{ value['quantity'] }}
+                                        </span></div>
                                 </div>
                                 <div class="card-actions justify-end">
                                     <button class="btn btn-sm btn-outline btn-accent">
@@ -30,20 +33,20 @@
                                     </button>
                                     <button v-if="!inCart(getProductById(value['id']))"
                                         @click="addCartProduct(getProductById(value['id']))"
-                                        class="btn btn-sm btn-outline btn-info">
+                                        class="btn btn-sm btn-outline btn-secondary">
                                         <ShoppingCartIcon class="h-5 w-5" />
                                     </button>
                                     <div v-else class="grid grid-cols-3 gap-1">
                                         <button @click="addCartProduct(getProductById(value['id']))"
-                                            class="btn btn-xs btn-accent">
+                                            class="btn btn-xs bg-secondary-focus">
                                             <PlusIcon class="h-5 w-5" />
                                         </button>
                                         <button @click="removeCartProduct(getProductById(value['id']))"
-                                            class="btn btn-xs btn-error">
+                                            class="btn btn-xs bg-accent-focus">
                                             <MinusIcon class="h-5 w-5" />
                                         </button>
                                         <button @click="removeCartProducts(getProductById(value['id']))"
-                                            class="btn btn-sm btn-error">
+                                            class="btn btn-sm bg-accent-focus">
                                             <TrashIcon class="h-5 w-5" />
                                         </button>
                                     </div>
