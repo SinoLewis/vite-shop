@@ -72,13 +72,13 @@
                     </TabList>
 
                     <TabPanels class="mt-2">
-                        <TabPanel v-for="(value, key, index) in categories" :key="index" class="rounded-xl p-3">
+                        <TabPanel v-for="category in Object.keys(categories)" :key="category" class="rounded-xl p-3">
                             <div class="grid grid-row-2 gap-8 justify-items-center">
                                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-x-12 lg:grid-cols-4">
                                     <!-- TODO: Pagination; Loop over range instead of products (LearnVue tut)-->
                                     <Suspense>
                                         <template #default>
-                                            <ProductsCard :products=value />
+                                            <ProductsCard :category=category />
                                         </template>
                                         <template #fallback>
                                             <ItemsLoader />

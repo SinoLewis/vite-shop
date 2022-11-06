@@ -48,11 +48,23 @@ import { ShoppingCartIcon, HeartIcon, PlusIcon, MinusIcon, TrashIcon } from '@he
 import type { Product } from "@/types/product";
 import { useShopStore } from '@/stores/shop';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 
-defineProps<{
-    products: Product[],
+const props = defineProps<{
+    category: string,
 }>()
 
 const shop = useShopStore()
 const { inCart, cartItems, addCartProduct, removeCartProduct, removeCartProducts } = shop;
+
+const loadData = async (category: any) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const { categories } = storeToRefs(shop)
+            resolve(categories.value[category])
+        }, 500)
+    })
+}
+const products: any = await loadData(props.category)
+
 </script>
