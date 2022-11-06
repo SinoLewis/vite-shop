@@ -61,7 +61,9 @@ const loadData = async (category: any) => {
     return new Promise((resolve) => {
         setTimeout(() => {
             const { categories } = storeToRefs(shop)
-            resolve(categories.value[category])
+            if(categories.value[category].length !== 0){
+                resolve(categories.value[category])
+            }
         }, 500)
     })
 }
