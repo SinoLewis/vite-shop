@@ -76,7 +76,7 @@
                             <div class="grid grid-row-2 gap-8 justify-items-center">
                                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-x-12 lg:grid-cols-4">
                                     <!-- TODO: Pagination; Loop over range instead of products (LearnVue tut)-->
-                                    <Suspense>
+                                    <Suspense @resolve="susResolve" @fallback="susFallback" @pending="susPending">
                                         <template #default>
                                             <ProductsCard :category=category />
                                         </template>
@@ -85,7 +85,8 @@
                                         </template>
                                     </Suspense>
                                 </div>
-                                <Pagination :totalPages="10" :perPage="10" :currentPage="currentPage" @pagechanged="onPageChange" />
+                                <Pagination :totalPages="10" :perPage="10" :currentPage="currentPage"
+                                    @pagechanged="onPageChange" />
                             </div>
                         </TabPanel>
                     </TabPanels>
@@ -100,6 +101,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { ShieldCheckIcon, RocketLaunchIcon, FaceSmileIcon, GifIcon, CogIcon, ServerIcon } from '@heroicons/vue/20/solid'
 import Pagination from '@/components/Pagination.vue'
 import ItemsLoader from "@/components/ItemsLoader.vue";
+import ProductsCard from "@/components/ProductsCard.vue";
 import { defineAsyncComponent, ref } from "vue";
 import { useShopStore } from '@/stores/shop';
 import { storeToRefs } from 'pinia';
@@ -116,19 +118,30 @@ function onPageChange(page: any) {
     console.log(page)
     currentPage.value = page;
 }
+function susPending() {
+    // TODO: Start loading spinner
+    console.log('pending exec')
+}
+function susFallback() {
+    console.log('fallback exec')
+}
+function susResolve() {
+    // TODO: Stop loading spinner
+    console.log('resolve exec')
+}
 // TODO: onErrorCaptured callback
-const ProductsCard = defineAsyncComponent({
-    loader: () => import("@/components/ProductsCard.vue"),
-    // A component to use while the async component is loading
-    loadingComponent: ItemsLoader,
-    // Delay before showing the loading component. Default: 200ms.
-    delay: 0,
+// const ProductsCard = defineAsyncComponent({
+//     loader: () => import("@/components/ProductsCard.vue"),
+//     // A component to use while the async component is loading
+//     loadingComponent: ItemsLoader,
+//     // Delay before showing the loading component. Default: 200ms.
+//     delay: 0,
 
-    // A component to use if the load fails
-    errorComponent: () => import("@/components/ItemsError.vue"),
-    // The error component will be displayed if a timeout is
-    // provided and exceeded. Default: Infinity.
-    // timeout: 3000
-    // TODO: custom loader instead of suspense ; Suspensible false
-})
+//     // A component to use if the load fails
+//     errorComponent: () => import("@/components/ItemsError.vue"),
+//     // The error component will be displayed if a timeout is
+//     // provided and exceeded. Default: Infinity.
+//     // timeout: 3000
+//     // TODO: custom loader instead of suspense ; Suspensible false
+// })
 </script>
