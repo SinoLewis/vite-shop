@@ -30,4 +30,6 @@ coverage
 
 manifest.json
 sw.js
+/dev-dist/
 Auth.txt
+/src/components/testin/*

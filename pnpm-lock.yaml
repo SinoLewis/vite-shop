@@ -30,6 +30,7 @@ specifiers:
   vue: ^3.2.38
   vue-instantsearch: ^4.6.0
   vue-router: ^4.1.5
+  vue-toast-notification: ^3.0
   vue-tsc: ^0.40.7
 
 dependencies:
@@ -45,6 +46,7 @@ dependencies:
   vue: 3.2.41
   vue-instantsearch: 4.6.0_vue@3.2.41
   vue-router: 4.1.5_vue@3.2.41
+  vue-toast-notification: 3.0.4_vue@3.2.41
 
 devDependencies:
   '@types/jsdom': 20.0.0
@@ -5539,6 +5541,15 @@ packages:
       vue: ^3.2.0
     dependencies:
       '@vue/devtools-api': 6.4.5
+      vue: 3.2.41
+    dev: false
+
+  /vue-toast-notification/3.0.4_vue@3.2.41:
+    resolution: {integrity: sha512-rEhLtcKg8SVdBpdN7PrNst5nmY8dw0j3NkNImqurhlGurqR/QDKoou0t2PuCReEOCTKqHvfLCle2I3kwQWDWDQ==}
+    engines: {node: '>=12.15.0'}
+    peerDependencies:
+      vue: ^3.0
+    dependencies:
       vue: 3.2.41
     dev: false
 
