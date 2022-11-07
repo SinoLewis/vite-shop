@@ -47,11 +47,15 @@ jobs:
 
       # - name: Run Synk Security 👨‍💻
 
-      - name: Run Vite Build 🧱
-      - run: npm run build
+      #   DEV ONLY
+      - name: Run Vite Devs 🧱
+      - run: npm run dev
 
-      - name: Run Vite Preview 🏛️
-      - run: npm run preview
+      # - name: Run Vite Build 🧱
+      # - run: npm run build
+
+      # - name: Run Vite Preview 🏛️
+      # - run: npm run preview
 
       # - name: Run Deployment 📊
       # - name: Run Monitoring 🚀
