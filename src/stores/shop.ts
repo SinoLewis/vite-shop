@@ -33,8 +33,9 @@ export const useShopStore = defineStore("shop", {
         // current_transaction: {} as Transaction
 
         // Miscelenous
-        // showModal: false
-        // showPopupCart: false
+        // TODO: State 4 notifications
+        // notifications: [{type: 'error', msg: 'Your offline'}]
+        // show_modal: false
     }),
     getters: {
         authUser: (state) => {
