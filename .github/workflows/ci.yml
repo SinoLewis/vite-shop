@@ -49,13 +49,13 @@ jobs:
 
       #   DEV ONLY
       - name: Run Vite Devs 🧱
-      - run: npm run dev
+        run: npm run dev
 
       # - name: Run Vite Build 🧱
-      # - run: npm run build
+      #   run: npm run build
 
       # - name: Run Vite Preview 🏛️
-      # - run: npm run preview
+      #   run: npm run preview
 
       # - name: Run Deployment 📊
       # - name: Run Monitoring 🚀
