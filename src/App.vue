@@ -3,14 +3,20 @@ import { RouterView } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
 import { TransitionRoot } from '@headlessui/vue'
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, toRaw, watchEffect } from 'vue'
 import { useShopStore, initShop } from '@/stores/shop'
 import { supabase } from "@/server/supabase";
-import { createPinia, storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia'
 import router from './router'
 
 const shop = useShopStore()
 initShop()
+// TODO: While loop to check if products is Empty to fetch data
+while (toRaw(shop.products).length === 0) {
+    setTimeout(()=>{
+      console.warn('Products state Empty')
+    }, 5000)
+}
 
 const { loading } = storeToRefs(shop)
 let timeout: NodeJS.Timeout;
@@ -47,7 +53,7 @@ shop.$subscribe(
   async (mutation, state) => {
     mutation.type
     mutation.storeId
-
+    state = state
     state.user = supabase.auth.user();
     // const { data: { user } } = await supabase.auth.getUser()
     // state.user = user
