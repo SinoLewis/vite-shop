@@ -6,8 +6,11 @@ import type { Order } from "../types/order";
 import type { Transaction } from "../types/transaction";
 import type { Cart } from "../types/cart";
 // import { User } from "@supabase/supabase-js";
+import { useToast } from 'vue-toast-notification';
+
 
 const SELECTED_CART = 'LocalCart';
+const $toast = useToast();
 
 export const useShopStore = defineStore("shop", {
     state: () => ({
@@ -107,10 +110,9 @@ export const useShopStore = defineStore("shop", {
                     password: user_form.password,
                 });
                 if (error) throw error;
-                // TODO: push notification alert for succesful signup
-                console.log("You've been registered successfully");
+                $toast.success("You've been registered successfully");
             } catch (error: any) {
-                // TODO: push notification alert for error when signup
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -121,10 +123,9 @@ export const useShopStore = defineStore("shop", {
                     password: user_form.password,
                 });
                 if (error) throw error;
-                // TODO: push notification alert for succesful sigin
-                console.log("You've Signed In successfully");
+                $toast.success("You've Signed In successfully");
             } catch (error: any) {
-                // TODO: push notification alert for error when sigin
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -136,10 +137,9 @@ export const useShopStore = defineStore("shop", {
                     provider: provider,
                 })
                 if (error) throw error;
-                // TODO: push notification alert for succesful 3rd party signin
-                console.log("You've been Signed In successfully");
+                $toast.success("You've been Signed In successfully");
             } catch (error: any) {
-                // TODO: push notification alert for error when sign
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -147,10 +147,9 @@ export const useShopStore = defineStore("shop", {
             try {
                 const { error } = await supabase.auth.signOut();
                 if (error) throw error;
-                // TODO: push notification alert for succesful signout
-                console.log("You've been logged Out successfully");
+                $toast.success("You've been logged Out successfully");
             } catch (error: any) {
-                // TODO: push notification alert for error when signout
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -163,10 +162,9 @@ export const useShopStore = defineStore("shop", {
                     data: this.user_details,
                 })
                 if (error) throw error;
-                // TODO: push notification alert for succesful user update
-                console.log("Your User Details have been updated successfully");
+                $toast.success("Your User Details have been updated successfully");
             } catch (error: any) {
-                // TODO: push notification alert for error when user update
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -254,10 +252,9 @@ export const useShopStore = defineStore("shop", {
                     // TODO: updated_at column
                     .upsert(this.cart)
                 if (error) throw error;
-                // TODO: push notification alert for succesful user update
                 console.log("Added Cart product", cart_product)
             } catch (error: any) {
-                // TODO: push notification alert for error when user update
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -271,10 +268,9 @@ export const useShopStore = defineStore("shop", {
                     .from('carts')
                     .upsert(this.cart)
                 if (error) throw error;
-                // TODO: push notification alert for succesful user update
                 console.log("Removed Cart product ", cart_product)
             } catch (error: any) {
-                // TODO: push notification alert for error when user update
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
 
@@ -286,10 +282,9 @@ export const useShopStore = defineStore("shop", {
                     .from('carts')
                     .upsert(this.cart)
                 if (error) throw error;
-                // TODO: push notification alert for succesful user update
                 console.log("Removed Cart products ", cart_product)
             } catch (error: any) {
-                // TODO: push notification alert for error when user update
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
         },
@@ -300,10 +295,9 @@ export const useShopStore = defineStore("shop", {
                     .from('carts')
                     .upsert(this.cart)
                 if (error) throw error;
-                // TODO: push notification alert for succesful user update
                 console.log("Removed all Cart products")
             } catch (error: any) {
-                // TODO: push notification alert for error when user update
+                $toast.error(error.message)
                 console.log(error.error_description || error.message);
             }
 
