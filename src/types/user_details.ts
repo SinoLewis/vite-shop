@@ -18,3 +18,8 @@ export interface UserDetails {
   last_login?: string;
   avatarUrl?: string;
 }
+
+export interface UserForm  {
+  email: string
+  password: string
+}

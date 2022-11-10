@@ -1,11 +1,11 @@
 import { defineStore, storeToRefs } from "pinia";
 import { supabase } from '../server/supabase'
 import type { Product } from "../types/product";
-import type { UserDetails } from "../types/user_details";
+import type { UserDetails, UserForm } from "../types/user_details";
 import type { Order } from "../types/order";
 import type { Transaction } from "../types/transaction";
 import type { Cart } from "../types/cart";
-// import { User } from "@supabase/supabase-js";
+import type { ApiError } from "@supabase/supabase-js";
 import { useToast } from 'vue-toast-notification';
 import type { ToastProps } from 'vue-toast-notification';
 
@@ -109,7 +109,7 @@ export const useShopStore = defineStore("shop", {
         /*  
             1. User
          */
-        async signUpAction(user_form: any) {
+        async signUpAction(user_form: UserForm) {
             try {
                 const { error } = await supabase.auth.signUp({
                     email: user_form.email,
@@ -117,12 +117,12 @@ export const useShopStore = defineStore("shop", {
                 });
                 if (error) throw error;
                 $toast.success("You've been registered successfully", toastBody);
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
-        async signInAction(user_form: any) {
+        async signInAction(user_form: UserForm) {
             try {
                 const { error, user } = await supabase.auth.signIn({
                     email: user_form.email,
@@ -130,12 +130,12 @@ export const useShopStore = defineStore("shop", {
                 });
                 if (error) throw error;
                 $toast.success("You've Signed In successfully", toastBody);
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
-        async signInTPS(user_form: any, provider: any) {
+        async signInTPS(user_form: UserForm, provider: any) {
             try {
                 const { user, session, error } = await supabase.auth.signIn({
                     email: user_form.email,
@@ -144,7 +144,7 @@ export const useShopStore = defineStore("shop", {
                 })
                 if (error) throw error;
                 $toast.success("You've been Signed In successfully", toastBody);
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
@@ -154,7 +154,7 @@ export const useShopStore = defineStore("shop", {
                 const { error } = await supabase.auth.signOut();
                 if (error) throw error;
                 $toast.success("You've been logged Out successfully", toastBody);
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
@@ -169,7 +169,7 @@ export const useShopStore = defineStore("shop", {
                 })
                 if (error) throw error;
                 $toast.success("Your User Details have been updated successfully", toastBody);
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
@@ -185,22 +185,22 @@ export const useShopStore = defineStore("shop", {
                 this.products = await data
                 console.log("Products state: ", await data);
                 // return await data
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 console.log(error.error_description || error.message)
                 // return []
             }
         },
-        getProductById(id: string) {
+        getProductById(id: string): Product {
             if (this.products) {
                 let product = this.products.find((product) => product.id === id)
                 return Object.assign({}, product)
-            }
+            } else return {} as Product
         },
-        currentProduct(title: string) {
+        currentProduct(title: string): Product {
             if (this.products) {
                 let product = this.products.find((product) => product.title === title)
                 return Object.assign({}, product)
-            }
+            } else return {} as Product
         },
         /*  
             3. CART
@@ -216,7 +216,7 @@ export const useShopStore = defineStore("shop", {
                     if (error) throw error
                     localStorage.setItem(SELECTED_CART, await data[0]['id'])
                     console.log('Setting new cart', await data[0]['id'])
-                } catch (error: any) {
+                } catch (error: ApiError | any) {
                     console.log(error.error_description || error.message);
                 }
             }
@@ -230,7 +230,7 @@ export const useShopStore = defineStore("shop", {
                     this.cart = await data[0]
                     // if(!this.cart.cart_products) this.cart.cart_products = data[0]['cart_products']
                     console.log('Getting cart', data[0])
-                } catch (error: any) {
+                } catch (error: ApiError | any) {
                     console.log(error.error_description || error.message);
                 }
             }
@@ -258,7 +258,7 @@ export const useShopStore = defineStore("shop", {
                     .upsert(this.cart)
                 if (error) throw error;
                 console.log("Added Cart product", cart_product)
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
@@ -274,7 +274,7 @@ export const useShopStore = defineStore("shop", {
                     .upsert(this.cart)
                 if (error) throw error;
                 console.log("Removed Cart product ", cart_product)
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
@@ -288,7 +288,7 @@ export const useShopStore = defineStore("shop", {
                     .upsert(this.cart)
                 if (error) throw error;
                 console.log("Removed Cart products ", cart_product)
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
@@ -301,7 +301,7 @@ export const useShopStore = defineStore("shop", {
                     .upsert(this.cart)
                 if (error) throw error;
                 console.log("Removed all Cart products")
-            } catch (error: any) {
+            } catch (error: ApiError | any) {
                 $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }

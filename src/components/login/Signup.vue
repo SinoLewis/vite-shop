@@ -41,6 +41,7 @@ import { ref } from 'vue'
 import { createPinia } from "pinia";
 import { useShopStore } from '@/stores/shop'
 import { useRouter } from 'vue-router';
+import type { UserForm } from "@/types/user_details";
 
 const { signUpAction } = useShopStore(createPinia())
 const router = useRouter()
@@ -49,7 +50,7 @@ const email = ref('')
 const password = ref('')
 
 function handleSignup() {
-    const user_form = { email: email.value, password: password.value }
+    const user_form: UserForm = { email: email.value, password: password.value }
     signUpAction(user_form)
 }
 </script>
