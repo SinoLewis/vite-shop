@@ -7,10 +7,16 @@ import type { Transaction } from "../types/transaction";
 import type { Cart } from "../types/cart";
 // import { User } from "@supabase/supabase-js";
 import { useToast } from 'vue-toast-notification';
+import type { ToastProps } from 'vue-toast-notification';
 
 
 const SELECTED_CART = 'LocalCart';
 const $toast = useToast();
+
+const toastBody: ToastProps = {
+    position: 'top-right',
+    duration: 10000
+}
 
 export const useShopStore = defineStore("shop", {
     state: () => ({
@@ -110,9 +116,9 @@ export const useShopStore = defineStore("shop", {
                     password: user_form.password,
                 });
                 if (error) throw error;
-                $toast.success("You've been registered successfully");
+                $toast.success("You've been registered successfully", toastBody);
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -123,9 +129,9 @@ export const useShopStore = defineStore("shop", {
                     password: user_form.password,
                 });
                 if (error) throw error;
-                $toast.success("You've Signed In successfully");
+                $toast.success("You've Signed In successfully", toastBody);
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -137,9 +143,9 @@ export const useShopStore = defineStore("shop", {
                     provider: provider,
                 })
                 if (error) throw error;
-                $toast.success("You've been Signed In successfully");
+                $toast.success("You've been Signed In successfully", toastBody);
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -147,9 +153,9 @@ export const useShopStore = defineStore("shop", {
             try {
                 const { error } = await supabase.auth.signOut();
                 if (error) throw error;
-                $toast.success("You've been logged Out successfully");
+                $toast.success("You've been logged Out successfully", toastBody);
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -162,9 +168,9 @@ export const useShopStore = defineStore("shop", {
                     data: this.user_details,
                 })
                 if (error) throw error;
-                $toast.success("Your User Details have been updated successfully");
+                $toast.success("Your User Details have been updated successfully", toastBody);
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -173,7 +179,6 @@ export const useShopStore = defineStore("shop", {
          */
 
         async getProducts() {
-            console.log('PINIA PINIA PINIA')
             try {
                 const { data, error } = await supabase.from('products').select()
                 if (error) throw error
@@ -254,7 +259,7 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 console.log("Added Cart product", cart_product)
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -270,7 +275,7 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 console.log("Removed Cart product ", cart_product)
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
 
@@ -284,7 +289,7 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 console.log("Removed Cart products ", cart_product)
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
         },
@@ -297,7 +302,7 @@ export const useShopStore = defineStore("shop", {
                 if (error) throw error;
                 console.log("Removed all Cart products")
             } catch (error: any) {
-                $toast.error(error.message)
+                $toast.error(error.message, toastBody)
                 console.log(error.error_description || error.message);
             }
 
