@@ -34,7 +34,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
+      # TODO: Add pnpm
       - name: Install dependencies 👨🏻‍💻
         run: npm install
         # run: npm ci --prefer-offline --no-audit
@@ -45,7 +45,13 @@ jobs:
       # - name: Run tests 🧪
       #   run: npm run test
 
-      # - name: Run Synk Security 👨‍💻
+      # Run Synk Security 
+      - name: Check for High Severity OSS Vulnerabilities 👨‍💻
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --fail-on=upgradable
 
       # - name: Run Vite Build 🧱
       #   run: npm run build
