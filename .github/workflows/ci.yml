@@ -41,20 +41,19 @@ jobs:
 
       # - name: Run linter 👀
       #   run: npm run lint
-
-      # - name: Run tests 🧪
-      #   run: npm run test
-
-      # Run Synk Security 
-      - name: Check for High Severity OSS Vulnerabilities 👨‍💻
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities 🚓
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high --fail-on=upgradable
+  # - name: Run tests 🧪
+  #   run: npm run test
 
-      # - name: Run Vite Build 🧱
-      #   run: npm run build
+  # - name: Run Vite Build 🧱
+  #   run: npm run build
 
-      # - name: Run Deployment 📊
-      # - name: Run Monitoring 🚀
+  # - name: Run Deployment 📊
+  # - name: Run Monitoring 🚀
