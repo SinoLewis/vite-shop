@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-row-2 gap-8 justify-items-center">
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-x-12 lg:grid-cols-4">
             <div v-for="item in Array(12).keys()" :key="item"
                 class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
                 <div class="w-72 h-48 animate-pulse flex space-x-4">
