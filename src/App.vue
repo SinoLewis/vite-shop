@@ -2,20 +2,46 @@
 import { RouterView } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
+import RouteLoader from '@/components/ui/RouteLoader.vue'
 import { TransitionRoot } from '@headlessui/vue'
-import { defineComponent, ref, toRaw, watchEffect } from 'vue'
+import { defineComponent, onMounted, ref, toRaw, watchEffect } from 'vue'
 import { useShopStore, initShop } from '@/stores/shop'
 import { supabase } from "@/server/supabase";
 import type { AuthChangeEvent, AuthSession } from "@supabase/supabase-js";
 import { storeToRefs } from 'pinia'
-import router from './router'
 import { useToast } from 'vue-toast-notification';
-
+import router from '@/router/index'
+import { useUIStore } from "@/stores/ui";
 
 const SELECTED_CART = 'LocalCart';
 const $toast = useToast();
 const shop = useShopStore()
 initShop()
+
+const ui = useUIStore()
+const { routeLoading } = storeToRefs(ui)
+let timeout: NodeJS.Timeout;
+
+onMounted(() => {
+  // TODO: routeLoading = true for all async loads 
+  router.beforeEach((to, from, next) => {
+    console.warn('Router before route')
+    timeout = setTimeout(() => {
+      ui.$patch({ routeLoading: true })
+    }, 0)
+    next()
+  })
+
+  router.afterEach((to, from) => {
+    console.warn('Router After route')
+    // show for at least 400ms
+    clearTimeout(timeout);
+    setTimeout(() => {
+      ui.$patch({ routeLoading: false })
+    }, 900)
+
+  })
+})
 // TODO: While loop to check if products is Empty to fetch data
 // TODO: Notification for Offline check
 // if (toRaw(shop.products).length === 0) {
@@ -25,8 +51,6 @@ initShop()
 //     }, 5000)
 // }
 // }
-const { loading } = storeToRefs(shop)
-let timeout: NodeJS.Timeout;
 
 // TODO: Route loaders & Scroll Behaviour
 // scrollBehavior(to, from, savedPosition) {
@@ -78,13 +102,11 @@ shop.$subscribe(
       await localStorage.setItem('SELECTED_CART', JSON.stringify(state.cart.id))
       $toast.success('Cart ID Set')
     } else {
-      $toast.error('Offline check') 
+      $toast.error('Offline check')
     }
   },
   { detached: true }
 )
-
-
 </script>
 
 <template>
@@ -95,6 +117,9 @@ shop.$subscribe(
       <transition name="transition duration-1000 ease-in-out" mode="out-in">
         <keep-alive>
           <div :key="route.name || undefined">
+            <RouteLoader>
+              <div class="fixed w-full top-0 left-0 h-1 gradient-loader"></div>
+            </RouteLoader>
             <component :is="Component"></component>
           </div>
         </keep-alive>

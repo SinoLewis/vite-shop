@@ -27,7 +27,6 @@ export const useShopStore = defineStore("shop", {
         products: [] as Product[],
         cart: {} as Cart,
         transaction: {} as Transaction,
-        loading: true,
         current_product: {} as Product,
 
         // fav_Products: [] as Product[],
