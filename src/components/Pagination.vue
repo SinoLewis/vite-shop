@@ -38,7 +38,9 @@
 </template>
   
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
     props: {
         maxVisibleButtons: {
             type: Number,
@@ -57,7 +59,7 @@ export default {
             type: Number,
             required: true
         },
-    },
+    } as any,
     computed: {
         startPage() {
             // When on the first page
@@ -103,7 +105,7 @@ export default {
         onClickPreviousPage() {
             this.$emit('pagechanged', this.currentPage - 1);
         },
-        onClickPage(page) {
+        onClickPage(page: any) {
             this.$emit('pagechanged', page);
         },
         onClickNextPage() {
@@ -113,5 +115,5 @@ export default {
             this.$emit('pagechanged', this.totalPages);
         }
     }
-};
+});
 </script>
