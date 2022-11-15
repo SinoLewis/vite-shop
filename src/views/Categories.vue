@@ -13,32 +13,10 @@
                                     ? 'bg-white shadow'
                                     : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',
                             ]">
-                                <!-- TODO: Improve Performance efficiency; if bad -->
-                                <div class="">
-                                    <div class="" v-if="key === 'Hoodies'">
-                                        <ShieldCheckIcon class="w-12 h-8" />
-                                        <span>{{ key }}</span>
-                                    </div>
-                                    <div class="" v-if="key === 'Men\'s'">
-                                        <RocketLaunchIcon class="w-12 h-8" />
-                                        <span>{{ key }}</span>
-                                    </div>
-                                    <div class="" v-if="key === 'Lady\s'">
-                                        <FaceSmileIcon class="w-12 h-8" />
-                                        <span>{{ key }}</span>
-                                    </div>
-                                    <div class="" v-if="key === 'Kid\'s'">
-                                        <GifIcon class="w-12 h-8" />
-                                        <span>{{ key }}</span>
-                                    </div>
-                                    <div class="" v-if="key === 'Jewellery'">
-                                        <CogIcon class="w-12 h-8" />
-                                        <span>{{ key }}</span>
-                                    </div>
-                                    <div class="" v-if="key === 'Shoals'">
-                                        <ServerIcon class="w-12 h-8" />
-                                        <span>{{ key }}</span>
-                                    </div>
+                                <!-- TODO: Add dynamic buttons -->
+                                <div>
+                                    <ShieldCheckIcon class="w-12 h-8" />
+                                    <span>{{ key }}</span>
                                     <!-- <span class="p-1.5">{{ key }}</span> -->
                                 </div>
                                 <!-- <div class="flex gap-2 justify-center items-center">
@@ -94,7 +72,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { ShieldCheckIcon, RocketLaunchIcon, FaceSmileIcon, GifIcon, CogIcon, ServerIcon } from '@heroicons/vue/20/solid'
 import ItemsLoader from "@/components/ItemsLoader.vue";
 import ProductsCard from "@/components/ProductsCard.vue";
-import { ref } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import { useShopStore } from '@/stores/shop';
 import { storeToRefs } from 'pinia';
 
@@ -113,7 +91,6 @@ function susResolve() {
     console.log('resolve exec')
 }
 // TODO: onErrorCaptured callback
-// TODO: Notification for Offline check
 // const ProductsCard = defineAsyncComponent({
 //     loader: () => import("@/components/ProductsCard.vue"),
 //     // A component to use while the async component is loading
