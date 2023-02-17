@@ -34,13 +34,18 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      # TODO: Add pnpm
-      - name: Install dependencies 👨🏻‍💻
-        run: npm ci
-        # run: npm ci --prefer-offline --no-audit
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm i
 
       # - name: Run linter 👀
       #   run: npm run lint
+
+      # - name: Build App 👀
+
   security:
     runs-on: ubuntu-latest
     steps:
